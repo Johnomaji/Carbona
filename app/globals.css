@@ -1,26 +1,239 @@
 @import "tailwindcss";
 
+/* ============================================================
+   DESIGN TOKENS – CSS VARIABLES
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Dark theme (default) */
+  --bg: #07090a;
+  --bg-elev: #0f1912;
+  --bg-elev-2: #141b16;
+  --border: rgba(243, 241, 234, 0.08);
+  --border-strong: rgba(243, 241, 234, 0.16);
+  --text: #f3f1ea;
+  --text-2: rgba(243, 241, 234, 0.66);
+  --text-3: rgba(243, 241, 234, 0.42);
+
+  --cyan: #00e6c3;
+  --cyan-solid: #00e6c3;
+  --on-solid: #07090a;
+  --cyan-dim: rgba(0, 230, 195, 0.13);
+  --blue: #5b8cff;
+  --emerald: #1f9d63;
+  --emerald-bright: #39c07f;
+  --gold: #cda86a;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --nav-h: 76px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="light"] {
+  --bg: #f7f5ef;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #eeece2;
+  --border: rgba(16, 20, 15, 0.1);
+  --border-strong: rgba(16, 20, 15, 0.18);
+  --text: #10140f;
+  --text-2: rgba(16, 20, 15, 0.68);
+  --text-3: rgba(16, 20, 15, 0.46);
+  --cyan: #00937d;
+  --cyan-solid: #00937d;
+  --on-solid: #ffffff;
+  --cyan-dim: rgba(0, 147, 125, 0.1);
+  --blue: #2f5fe0;
+  --emerald: #0a8a4f;
+  --emerald-bright: #0a8a4f;
+  --gold: #8a6a34;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================================
+   TAILWIND v4 THEME CONFIG
+   ============================================================ */
+@theme {
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-bg-elev-2: var(--bg-elev-2);
+  --color-border-token: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text-token: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-cyan: var(--cyan);
+  --color-cyan-solid: var(--cyan-solid);
+  --color-on-solid: var(--on-solid);
+  --color-cyan-dim: var(--cyan-dim);
+  --color-blue-token: var(--blue);
+  --color-emerald-token: var(--emerald);
+  --color-emerald-bright: var(--emerald-bright);
+  --color-gold: var(--gold);
+
+  --font-display: var(--font-display-var), sans-serif;
+  --font-body: var(--font-body-var), sans-serif;
+  --font-mono: var(--font-mono-var), monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 999px;
+}
+
+/* ============================================================
+   BASE / RESET
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body-var), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition:
+    background 280ms var(--ease-standard),
+    color 280ms var(--ease-standard);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+input {
+  font: inherit;
+  color: inherit;
+}
+
+section {
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+}
+
+::selection {
+  background: var(--cyan-solid);
+  color: var(--on-solid);
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan-solid);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   SKIP LINK
+   ============================================================ */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--cyan-solid);
+  color: var(--on-solid);
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-sm);
+  z-index: 1000;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  left: 16px;
+  top: 16px;
+}
+
+/* ============================================================
+   CONTAINER
+   ============================================================ */
+.container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+@media (min-width: 860px) {
+  .container {
+    padding-inline: 40px;
+  }
+}
+
+/* ============================================================
+   VISUALLY HIDDEN
+   ============================================================ */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes scan {
+  0% {
+    top: 6%;
+  }
+  100% {
+    top: 94%;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }
