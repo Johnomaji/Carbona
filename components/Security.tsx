@@ -2,10 +2,10 @@
 import { motion } from 'framer-motion'
 
 const rev = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
 }
-const trans = { duration: 0.64, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
+const trans = { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
 
 const items = [
   {
@@ -52,48 +52,36 @@ const items = [
 export default function Security() {
   return (
     <section style={{ paddingBlock: 96 }}>
-      <style>{`@media (min-width: 860px) { .security-section { padding-block: 140px !important; } }`}</style>
-      <div className="container security-section" style={{ paddingBlock: 96 }}>
+      <style>{`@media (min-width: 860px) { .security-wrap { padding-block: 128px !important; } }`}</style>
+      <div className="container security-wrap" style={{ paddingBlock: 96 }}>
         <motion.div
           variants={rev}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-8%' }}
           transition={trans}
-          style={{ maxWidth: 640, marginBottom: 56 }}
+          style={{ maxWidth: 600, marginBottom: 60 }}
         >
-          <div
+          <span
             style={{
-              fontFamily: 'var(--font-mono-var), monospace',
+              display: 'inline-block',
               fontSize: '0.72rem',
-              letterSpacing: '0.14em',
+              fontWeight: 600,
+              letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: 'var(--cyan)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 9,
+              color: '#FF6363',
               marginBottom: 18,
             }}
           >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: 'var(--cyan-solid)',
-                boxShadow: '0 0 10px var(--cyan-solid)',
-                flexShrink: 0,
-              }}
-            />
             Security &amp; Governance
-          </div>
+          </span>
           <h2
             style={{
               fontFamily: 'var(--font-display-var), sans-serif',
-              fontWeight: 500,
-              letterSpacing: '-0.02em',
+              fontWeight: 700,
+              letterSpacing: '-0.04em',
               lineHeight: 1.06,
-              fontSize: 'clamp(1.9rem, 3.8vw, 2.75rem)',
+              fontSize: 'clamp(2rem, 4vw, 2.9rem)',
               color: 'var(--text)',
             }}
           >
@@ -102,52 +90,75 @@ export default function Security() {
         </motion.div>
 
         <style>{`@media (min-width: 800px) { .security-grid { grid-template-columns: repeat(2, 1fr) !important; } }`}</style>
-        <motion.div
+        <div
           className="security-grid"
-          variants={rev}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-8%' }}
-          transition={{ ...trans, delay: 0.1 }}
           style={{
             display: 'grid',
             gridTemplateColumns: '1fr',
-            gap: 1,
-            background: 'var(--border)',
-            border: '1px solid var(--border)',
-            borderRadius: 'var(--radius-lg)',
-            overflow: 'hidden',
+            gap: 12,
           }}
         >
-            {items.map((item) => (
+          {items.map((item, i) => (
+            <motion.div
+              key={item.title}
+              variants={rev}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-8%' }}
+              transition={{ ...trans, delay: i * 0.07 }}
+              style={{
+                background: 'rgba(255,251,247,0.03)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '28px 24px',
+                display: 'flex',
+                gap: 18,
+                alignItems: 'flex-start',
+                transition: 'border-color 280ms, background 280ms',
+              }}
+              onMouseEnter={(e) => {
+                ;(e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,99,99,0.25)'
+                ;(e.currentTarget as HTMLElement).style.background = 'rgba(255,99,99,0.04)'
+              }}
+              onMouseLeave={(e) => {
+                ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'
+                ;(e.currentTarget as HTMLElement).style.background = 'rgba(255,251,247,0.03)'
+              }}
+            >
               <div
-                key={item.title}
                 style={{
-                  background: 'var(--bg-elev)',
-                  padding: 28,
+                  width: 42,
+                  height: 42,
+                  borderRadius: 10,
+                  background: 'rgba(255,99,99,0.1)',
+                  border: '1px solid rgba(255,99,99,0.18)',
                   display: 'flex',
-                  gap: 16,
-                  alignItems: 'flex-start',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#FF6363',
+                  flexShrink: 0,
                 }}
               >
-                <span style={{ color: 'var(--cyan)', flexShrink: 0, marginTop: 2 }}>{item.icon}</span>
-                <div>
-                  <h3
-                    style={{
-                      fontFamily: 'var(--font-display-var), sans-serif',
-                      fontWeight: 600,
-                      fontSize: '0.98rem',
-                      color: 'var(--text)',
-                      marginBottom: 6,
-                    }}
-                  >
-                    {item.title}
-                  </h3>
-                  <p style={{ fontSize: '0.86rem', color: 'var(--text-2)' }}>{item.body}</p>
-                </div>
+                {item.icon}
               </div>
-            ))}
-        </motion.div>
+              <div>
+                <h3
+                  style={{
+                    fontFamily: 'var(--font-display-var), sans-serif',
+                    fontWeight: 700,
+                    fontSize: '1rem',
+                    letterSpacing: '-0.02em',
+                    color: 'var(--text)',
+                    marginBottom: 6,
+                  }}
+                >
+                  {item.title}
+                </h3>
+                <p style={{ fontSize: '0.88rem', color: 'var(--text-2)', lineHeight: 1.6 }}>{item.body}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   )

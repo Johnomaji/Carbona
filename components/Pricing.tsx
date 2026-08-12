@@ -2,16 +2,10 @@
 import { motion } from 'framer-motion'
 
 const rev = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
 }
-const trans = { duration: 0.64, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
-
-const CheckIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="15" height="15" style={{ color: 'var(--cyan)', flexShrink: 0, marginTop: 3 }}>
-    <path d="M20 6 9 17l-5-5" />
-  </svg>
-)
+const trans = { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
 
 const plans = [
   {
@@ -21,7 +15,6 @@ const plans = [
     priceSub: 'usage-based',
     features: ['API access', 'Up to 5,000 hectares', 'Community support'],
     cta: 'Request Access',
-    ctaStyle: 'ghost',
     featured: false,
   },
   {
@@ -31,71 +24,64 @@ const plans = [
     priceSub: 'by portfolio size',
     features: ['Full platform access', 'Dedicated onboarding', 'Priority support'],
     cta: 'Talk to Sales',
-    ctaStyle: 'primary',
     featured: true,
-    badge: 'Most Teams Choose This',
+    badge: 'Most Popular',
   },
   {
-    name: 'Enterprise & Government',
+    name: 'Enterprise',
     desc: 'For banks, development agencies, and national programs.',
     price: 'Custom',
     priceSub: 'contact us',
     features: ['Dedicated deployment', 'Custom SLAs', 'On-prem option'],
     cta: 'Talk to Sales',
-    ctaStyle: 'ghost',
     featured: false,
   },
 ]
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="#FF6363" strokeWidth="2.2" width="14" height="14" style={{ flexShrink: 0, marginTop: 3 }}>
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  )
+}
 
 export default function Pricing() {
   return (
     <section id="pricing" style={{ paddingBlock: 96 }}>
       <style>{`
-        @media (min-width: 860px) { .pricing-section { padding-block: 140px !important; } }
+        @media (min-width: 860px) { .pricing-wrap { padding-block: 128px !important; } }
         @media (min-width: 860px) { .pricing-grid { grid-template-columns: repeat(3, 1fr) !important; } }
       `}</style>
-      <div className="container pricing-section" style={{ paddingBlock: 96 }}>
+      <div className="container pricing-wrap" style={{ paddingBlock: 96 }}>
         <motion.div
           variants={rev}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-8%' }}
           transition={trans}
-          style={{ maxWidth: 640, marginInline: 'auto', textAlign: 'center', marginBottom: 56 }}
+          style={{ maxWidth: 600, marginInline: 'auto', textAlign: 'center', marginBottom: 60 }}
         >
-          <div
+          <span
             style={{
-              fontFamily: 'var(--font-mono-var), monospace',
+              display: 'inline-block',
               fontSize: '0.72rem',
-              letterSpacing: '0.14em',
+              fontWeight: 600,
+              letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: 'var(--cyan)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 9,
+              color: '#FF6363',
               marginBottom: 18,
             }}
           >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: 'var(--cyan-solid)',
-                boxShadow: '0 0 10px var(--cyan-solid)',
-                flexShrink: 0,
-              }}
-            />
             Pricing
-          </div>
+          </span>
           <h2
             style={{
               fontFamily: 'var(--font-display-var), sans-serif',
-              fontWeight: 500,
-              letterSpacing: '-0.02em',
+              fontWeight: 700,
+              letterSpacing: '-0.04em',
               lineHeight: 1.06,
-              fontSize: 'clamp(1.9rem, 3.8vw, 2.75rem)',
+              fontSize: 'clamp(2rem, 4vw, 2.9rem)',
               color: 'var(--text)',
             }}
           >
@@ -103,7 +89,7 @@ export default function Pricing() {
           </h2>
         </motion.div>
 
-        <div className="pricing-grid" style={{ display: 'grid', gap: 20 }}>
+        <div className="pricing-grid" style={{ display: 'grid', gap: 12 }}>
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
@@ -111,36 +97,39 @@ export default function Pricing() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-8%' }}
-              transition={{ ...trans, delay: i * 0.07 }}
+              transition={{ ...trans, delay: i * 0.08 }}
               style={{
                 position: 'relative',
-                background: 'var(--bg-elev)',
-                border: '1px solid',
-                borderColor: plan.featured ? 'rgba(205,168,106,.4)' : 'var(--border)',
+                background: plan.featured
+                  ? 'rgba(255,99,99,0.06)'
+                  : 'rgba(255,251,247,0.03)',
+                border: `1px solid ${plan.featured ? 'rgba(255,99,99,0.3)' : 'var(--border)'}`,
                 borderRadius: 'var(--radius-lg)',
                 padding: 32,
                 display: 'flex',
                 flexDirection: 'column',
+                boxShadow: plan.featured ? '0 0 0 1px rgba(255,99,99,0.08), 0 20px 60px rgba(255,99,99,0.08)' : 'none',
               }}
             >
               {plan.badge && (
                 <span
                   style={{
                     position: 'absolute',
-                    top: -12,
-                    left: 32,
+                    top: -13,
+                    left: 28,
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: 6,
                     fontFamily: 'var(--font-mono-var), monospace',
-                    fontSize: '0.66rem',
-                    letterSpacing: '0.06em',
+                    fontSize: '0.64rem',
+                    letterSpacing: '0.08em',
                     textTransform: 'uppercase',
-                    padding: '6px 12px',
+                    padding: '5px 12px',
                     borderRadius: 'var(--radius-full)',
-                    border: '1px solid rgba(205,168,106,.35)',
-                    background: 'rgba(205,168,106,.12)',
-                    color: 'var(--gold)',
+                    border: '1px solid rgba(255,99,99,0.3)',
+                    background: 'linear-gradient(135deg, #FF4D00, #FF6363)',
+                    color: '#FFFBF7',
+                    fontWeight: 700,
+                    boxShadow: '0 4px 16px rgba(255,99,99,0.4)',
                   }}
                 >
                   {plan.badge}
@@ -150,49 +139,44 @@ export default function Pricing() {
               <h3
                 style={{
                   fontFamily: 'var(--font-display-var), sans-serif',
-                  fontWeight: 600,
-                  fontSize: 'clamp(1.1rem, 1.6vw, 1.3rem)',
+                  fontWeight: 700,
+                  fontSize: '1.15rem',
+                  letterSpacing: '-0.03em',
                   color: 'var(--text)',
                   marginBottom: 8,
                 }}
               >
                 {plan.name}
               </h3>
-              <p style={{ fontSize: '0.86rem', color: 'var(--text-2)', marginBottom: 24, minHeight: 42 }}>
+              <p style={{ fontSize: '0.88rem', color: 'var(--text-2)', marginBottom: 24, minHeight: 40, lineHeight: 1.6 }}>
                 {plan.desc}
               </p>
               <div
                 style={{
                   fontFamily: 'var(--font-mono-var), monospace',
-                  fontSize: '1.6rem',
+                  fontSize: '1.7rem',
+                  fontWeight: 700,
+                  letterSpacing: '-0.03em',
                   color: 'var(--text)',
-                  marginBottom: 24,
+                  marginBottom: 6,
                 }}
               >
-                {plan.price}{' '}
-                <span
-                  style={{
-                    fontSize: '0.78rem',
-                    color: 'var(--text-3)',
-                    fontFamily: 'var(--font-body-var), sans-serif',
-                  }}
-                >
-                  · {plan.priceSub}
-                </span>
+                {plan.price}
+              </div>
+              <div
+                style={{
+                  fontSize: '0.78rem',
+                  color: 'var(--text-3)',
+                  marginBottom: 28,
+                  fontFamily: 'var(--font-mono-var), monospace',
+                }}
+              >
+                {plan.priceSub}
               </div>
 
-              <ul style={{ marginBottom: 28, display: 'flex', flexDirection: 'column', gap: 12, flexGrow: 1 }}>
+              <ul style={{ marginBottom: 32, display: 'flex', flexDirection: 'column', gap: 12, flexGrow: 1 }}>
                 {plan.features.map((f) => (
-                  <li
-                    key={f}
-                    style={{
-                      display: 'flex',
-                      gap: 10,
-                      fontSize: '0.86rem',
-                      color: 'var(--text-2)',
-                      alignItems: 'flex-start',
-                    }}
-                  >
+                  <li key={f} style={{ display: 'flex', gap: 10, fontSize: '0.88rem', color: 'var(--text-2)', alignItems: 'flex-start' }}>
                     <CheckIcon />
                     {f}
                   </li>
@@ -205,34 +189,32 @@ export default function Pricing() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 8,
-                  padding: '15px 28px',
-                  borderRadius: 'var(--radius-full)',
-                  fontSize: '0.92rem',
+                  padding: '12px 24px',
+                  borderRadius: 10,
+                  fontSize: '0.9rem',
                   fontWeight: 600,
                   width: '100%',
-                  background: plan.ctaStyle === 'primary' ? 'var(--cyan-solid)' : 'transparent',
-                  color: plan.ctaStyle === 'primary' ? 'var(--on-solid)' : 'var(--text)',
-                  border: plan.ctaStyle === 'ghost' ? '1px solid var(--border-strong)' : 'none',
-                  transition: 'transform 150ms, box-shadow 150ms, border-color 150ms, color 150ms',
+                  background: plan.featured ? 'linear-gradient(135deg, #FF4D00, #FF6363)' : 'rgba(255,251,247,0.07)',
+                  color: '#FFFBF7',
+                  border: plan.featured ? 'none' : '1px solid var(--border-strong)',
+                  boxShadow: plan.featured ? '0 4px 20px rgba(255,99,99,0.4)' : 'none',
+                  transition: 'transform 150ms, box-shadow 150ms, background 150ms',
                   textDecoration: 'none',
                 }}
                 onMouseEnter={(e) => {
-                  if (plan.ctaStyle === 'primary') {
+                  if (plan.featured) {
                     (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'
-                    ;(e.currentTarget as HTMLElement).style.boxShadow = '0 14px 32px rgba(0,230,195,.28)'
+                    ;(e.currentTarget as HTMLElement).style.boxShadow = '0 8px 28px rgba(255,99,99,0.55)'
                   } else {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--cyan)'
-                    ;(e.currentTarget as HTMLElement).style.color = 'var(--cyan)'
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(255,251,247,0.12)'
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if (plan.ctaStyle === 'primary') {
+                  if (plan.featured) {
                     (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
-                    ;(e.currentTarget as HTMLElement).style.boxShadow = 'none'
+                    ;(e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(255,99,99,0.4)'
                   } else {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-strong)'
-                    ;(e.currentTarget as HTMLElement).style.color = 'var(--text)'
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(255,251,247,0.07)'
                   }
                 }}
               >

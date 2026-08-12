@@ -3,10 +3,10 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const rev = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
 }
-const trans = { duration: 0.64, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
+const trans = { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
 
 const faqs = [
   {
@@ -32,49 +32,36 @@ export default function FAQ() {
 
   return (
     <section id="faq" style={{ paddingBlock: 96 }}>
-      <style>{`@media (min-width: 860px) { .faq-section { padding-block: 140px !important; } }`}</style>
-      <div className="container faq-section" style={{ paddingBlock: 96 }}>
+      <style>{`@media (min-width: 860px) { .faq-wrap { padding-block: 128px !important; } }`}</style>
+      <div className="container faq-wrap" style={{ paddingBlock: 96 }}>
         <motion.div
           variants={rev}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-8%' }}
           transition={trans}
-          style={{ maxWidth: 640, marginInline: 'auto', textAlign: 'center', marginBottom: 56 }}
+          style={{ maxWidth: 600, marginInline: 'auto', textAlign: 'center', marginBottom: 56 }}
         >
-          <div
+          <span
             style={{
-              fontFamily: 'var(--font-mono-var), monospace',
+              display: 'inline-block',
               fontSize: '0.72rem',
-              letterSpacing: '0.14em',
+              fontWeight: 600,
+              letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: 'var(--cyan)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 9,
+              color: '#FF6363',
               marginBottom: 18,
             }}
           >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: 'var(--cyan-solid)',
-                boxShadow: '0 0 10px var(--cyan-solid)',
-                flexShrink: 0,
-              }}
-            />
             FAQ
-          </div>
+          </span>
           <h2
             style={{
               fontFamily: 'var(--font-display-var), sans-serif',
-              fontWeight: 500,
-              letterSpacing: '-0.02em',
+              fontWeight: 700,
+              letterSpacing: '-0.04em',
               lineHeight: 1.06,
-              fontSize: 'clamp(1.9rem, 3.8vw, 2.75rem)',
+              fontSize: 'clamp(2rem, 4vw, 2.9rem)',
               color: 'var(--text)',
             }}
           >
@@ -89,76 +76,68 @@ export default function FAQ() {
           viewport={{ once: true, margin: '-8%' }}
           transition={{ ...trans, delay: 0.1 }}
           style={{
-            maxWidth: 760,
+            maxWidth: 780,
             marginInline: 'auto',
             display: 'flex',
             flexDirection: 'column',
-            gap: 1,
-            background: 'var(--border)',
-            border: '1px solid var(--border)',
-            borderRadius: 'var(--radius-lg)',
-            overflow: 'hidden',
+            gap: 8,
           }}
         >
           {faqs.map((item, i) => {
             const isOpen = openIndex === i
             return (
-              <div key={i} style={{ background: 'var(--bg-elev)' }}>
+              <div
+                key={i}
+                style={{
+                  background: 'rgba(255,251,247,0.03)',
+                  border: `1px solid ${isOpen ? 'rgba(255,99,99,0.25)' : 'var(--border)'}`,
+                  borderRadius: 'var(--radius-lg)',
+                  overflow: 'hidden',
+                  transition: 'border-color 200ms',
+                }}
+              >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                   aria-expanded={isOpen}
                   style={{
                     width: '100%',
-                    padding: '22px 24px',
+                    padding: '20px 22px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     gap: 16,
                     fontFamily: 'var(--font-display-var), sans-serif',
-                    fontSize: '1rem',
-                    fontWeight: 500,
-                    color: 'var(--text)',
+                    fontSize: '0.98rem',
+                    fontWeight: 600,
+                    letterSpacing: '-0.01em',
+                    color: isOpen ? 'var(--text)' : 'rgba(255,251,247,0.82)',
                     textAlign: 'left',
                     cursor: 'pointer',
                     background: 'none',
                     border: 'none',
+                    transition: 'color 150ms',
                   }}
                 >
                   {item.q}
-                  {/* Plus/minus indicator */}
                   <span
                     style={{
-                      width: 20,
-                      height: 20,
-                      position: 'relative',
+                      width: 24,
+                      height: 24,
+                      borderRadius: 6,
+                      background: isOpen ? 'rgba(255,99,99,0.15)' : 'rgba(255,251,247,0.05)',
+                      border: `1px solid ${isOpen ? 'rgba(255,99,99,0.25)' : 'var(--border)'}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       flexShrink: 0,
+                      transition: 'background 200ms, border-color 200ms, transform 200ms',
+                      transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
                     }}
                     aria-hidden="true"
                   >
-                    <span
-                      style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        width: 12,
-                        height: 1.5,
-                        background: 'var(--text-3)',
-                        transform: 'translate(-50%, -50%)',
-                      }}
-                    />
-                    <span
-                      style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        width: 1.5,
-                        height: 12,
-                        background: 'var(--text-3)',
-                        transform: `translate(-50%, -50%) rotate(${isOpen ? 90 : 0}deg)`,
-                        opacity: isOpen ? 0 : 1,
-                        transition: 'transform 280ms, opacity 280ms',
-                      }}
-                    />
+                    <svg viewBox="0 0 24 24" fill="none" stroke={isOpen ? '#FF6363' : 'rgba(255,251,247,0.4)'} strokeWidth="2" width="12" height="12">
+                      <path d="M12 5v14M5 12h14" />
+                    </svg>
                   </span>
                 </button>
 
@@ -168,14 +147,15 @@ export default function FAQ() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                      transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
                       style={{ overflow: 'hidden' }}
                     >
                       <p
                         style={{
-                          padding: '0 24px 22px',
+                          padding: '0 22px 20px',
                           fontSize: '0.92rem',
                           color: 'var(--text-2)',
+                          lineHeight: 1.7,
                           maxWidth: '64ch',
                         }}
                       >

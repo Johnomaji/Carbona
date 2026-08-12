@@ -22,17 +22,20 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://carbonahq.com'
+  ),
   title: 'Carbona — The Intelligence Layer for Carbon',
   description:
     'Carbona is AI-native infrastructure for carbon measurement, reporting, and verification — turning satellite, drone, and sensor data into verified carbon truth in weeks, not months.',
-  robots: 'index, follow',
+  robots: { index: true, follow: true },
   openGraph: {
     type: 'website',
     siteName: 'Carbona',
     title: 'Carbona — The Intelligence Layer for Carbon',
     description:
       'AI-native infrastructure for carbon measurement, reporting, and verification. Verified carbon truth in weeks, not months.',
-    url: 'https://carbona.ai/',
+    url: '/',
   },
   twitter: {
     card: 'summary_large_image',

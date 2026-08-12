@@ -3,10 +3,10 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const rev = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
 }
-const trans = { duration: 0.64, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
+const trans = { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
 
 const tabs = [
   {
@@ -21,7 +21,7 @@ const tabs = [
     label: 'AI Computer Vision',
     title: 'AI Computer Vision',
     body: 'Models trained on millions of labeled hectares detect canopy structure, land-use change, and disturbance events before they show up in a field report.',
-    visual: 'satellite',
+    visual: 'cv',
     highlight: 'Model confidence shown on every output.',
   },
   {
@@ -47,34 +47,45 @@ function TabVisual({ type }: { type: string }) {
         aspectRatio: '4/3',
         borderRadius: 'var(--radius-lg)',
         border: '1px solid var(--border)',
-        background: 'var(--bg-elev)',
+        background: 'rgba(255,251,247,0.02)',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
       {/* Grid overlay */}
-      {(type === 'satellite' || type === 'grid') && (
+      {(type === 'satellite' || type === 'grid' || type === 'cv') && (
         <div
           style={{
             position: 'absolute',
             inset: 0,
             backgroundImage: `
-              repeating-linear-gradient(90deg, transparent 0, transparent 11%, var(--border) 11%, var(--border) 11.3%),
-              repeating-linear-gradient(0deg, transparent 0, transparent 16%, var(--border) 16%, var(--border) 16.4%)
+              repeating-linear-gradient(90deg, transparent 0, transparent 11%, rgba(255,251,247,0.04) 11%, rgba(255,251,247,0.04) 11.3%),
+              repeating-linear-gradient(0deg, transparent 0, transparent 16%, rgba(255,251,247,0.04) 16%, rgba(255,251,247,0.04) 16.4%)
             `,
           }}
         />
       )}
 
-      {/* Scanline */}
-      {type === 'satellite' && (
+      {/* Orange radial glow */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(ellipse 60% 50% at 40% 40%, rgba(255,99,99,0.1) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Scanline for satellite */}
+      {(type === 'satellite' || type === 'cv') && (
         <div
           style={{
             position: 'absolute',
             left: 0,
             right: 0,
             height: 2,
-            background: 'linear-gradient(90deg, transparent, var(--cyan-solid), transparent)',
+            background: 'linear-gradient(90deg, transparent, #FF6363, transparent)',
+            opacity: 0.7,
             animation: 'scan 3.4s linear infinite',
           }}
         />
@@ -92,27 +103,30 @@ function TabVisual({ type }: { type: string }) {
             padding: '0 12%',
           }}
         >
-          {[0, 1, 2, 3].map((i) => (
-            <div key={i} style={{ position: 'relative' }}>
+          {[0, 1, 2, 3, 4].map((i) => (
+            <div key={i} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
               <div
                 style={{
-                  width: 10,
-                  height: 10,
+                  width: 12,
+                  height: 12,
                   borderRadius: '50%',
-                  background: 'var(--cyan-solid)',
-                  boxShadow: '0 0 14px rgba(0,230,195,.5)',
+                  background: '#FF6363',
+                  boxShadow: '0 0 16px rgba(255,99,99,0.6)',
+                  zIndex: 1,
+                  position: 'relative',
                 }}
               />
-              {i < 3 && (
+              {i < 4 && (
                 <div
                   style={{
                     position: 'absolute',
                     top: '50%',
                     left: '100%',
-                    width: 26,
+                    width: 'calc(100% - 12px)',
                     height: 1,
-                    background: 'var(--border-strong)',
+                    background: 'linear-gradient(90deg, rgba(255,99,99,0.5), rgba(255,251,247,0.1))',
                     transform: 'translateY(-50%)',
+                    minWidth: 28,
                   }}
                 />
               )}
@@ -120,6 +134,26 @@ function TabVisual({ type }: { type: string }) {
           ))}
         </div>
       )}
+
+      {/* Corner accent */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 12,
+          right: 12,
+          padding: '4px 10px',
+          background: 'rgba(255,99,99,0.12)',
+          border: '1px solid rgba(255,99,99,0.22)',
+          borderRadius: 6,
+          fontSize: '0.62rem',
+          color: '#FF6363',
+          fontFamily: 'var(--font-mono-var), monospace',
+          letterSpacing: '0.04em',
+          textTransform: 'uppercase',
+        }}
+      >
+        Live
+      </div>
     </div>
   )
 }
@@ -129,48 +163,36 @@ export default function FeatureTabs() {
 
   return (
     <section style={{ paddingBlock: 96 }}>
-      <style>{`@media (min-width: 860px) { .featuretabs-section { padding-block: 140px !important; } }`}</style>
-      <div className="container featuretabs-section" style={{ paddingBlock: 96 }}>
+      <style>{`@media (min-width: 860px) { .featuretabs-wrap { padding-block: 128px !important; } }`}</style>
+      <div className="container featuretabs-wrap" style={{ paddingBlock: 96 }}>
         <motion.div
           variants={rev}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-8%' }}
           transition={trans}
-          style={{ maxWidth: 640, marginBottom: 56 }}
+          style={{ maxWidth: 600, marginBottom: 52 }}
         >
-          <div
+          <span
             style={{
-              fontFamily: 'var(--font-mono-var), monospace',
+              display: 'inline-block',
               fontSize: '0.72rem',
-              letterSpacing: '0.14em',
+              fontWeight: 600,
+              letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: 'var(--cyan)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 9,
+              color: '#FF6363',
               marginBottom: 18,
             }}
           >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: 'var(--cyan-solid)',
-                boxShadow: '0 0 10px var(--cyan-solid)',
-                flexShrink: 0,
-              }}
-            />
             Inside The Engine
-          </div>
+          </span>
           <h2
             style={{
               fontFamily: 'var(--font-display-var), sans-serif',
-              fontWeight: 500,
-              letterSpacing: '-0.02em',
+              fontWeight: 700,
+              letterSpacing: '-0.04em',
               lineHeight: 1.06,
-              fontSize: 'clamp(1.9rem, 3.8vw, 2.75rem)',
+              fontSize: 'clamp(2rem, 4vw, 2.9rem)',
               color: 'var(--text)',
             }}
           >
@@ -178,105 +200,98 @@ export default function FeatureTabs() {
           </h2>
         </motion.div>
 
-        <motion.div
-          variants={rev}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-8%' }}
-          transition={{ ...trans, delay: 0.1 }}
-          style={{ marginTop: 48 }}
+        {/* Tab list */}
+        <div
+          role="tablist"
+          aria-label="Platform capabilities"
+          style={{
+            display: 'flex',
+            gap: 6,
+            overflowX: 'auto',
+            paddingBottom: 4,
+            marginBottom: 36,
+            WebkitOverflowScrolling: 'touch',
+            scrollbarWidth: 'none',
+          }}
         >
-          {/* Tab list */}
-          <div
-            role="tablist"
-            aria-label="Platform capabilities"
-            style={{
-              display: 'flex',
-              gap: 6,
-              overflowX: 'auto',
-              paddingBottom: 4,
-              marginBottom: 32,
-              WebkitOverflowScrolling: 'touch',
-              scrollbarWidth: 'none',
-            }}
-          >
-            {tabs.map((tab) => (
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab.id
+            return (
               <button
                 key={tab.id}
                 role="tab"
                 id={`tabbtn-${tab.id}`}
-                aria-selected={activeTab === tab.id}
+                aria-selected={isActive}
                 aria-controls={`tab-${tab.id}`}
                 onClick={() => setActiveTab(tab.id)}
                 style={{
                   flexShrink: 0,
-                  padding: '11px 20px',
-                  borderRadius: 'var(--radius-full)',
-                  fontSize: '0.85rem',
-                  color: activeTab === tab.id ? 'var(--on-solid)' : 'var(--text-2)',
-                  border: '1px solid',
-                  borderColor: activeTab === tab.id ? 'var(--cyan-solid)' : 'var(--border)',
-                  background: activeTab === tab.id ? 'var(--cyan-solid)' : 'transparent',
+                  padding: '9px 18px',
+                  borderRadius: 8,
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  color: isActive ? '#FFFBF7' : 'var(--text-3)',
+                  background: isActive ? 'linear-gradient(135deg, #FF4D00, #FF6363)' : 'rgba(255,251,247,0.05)',
+                  border: `1px solid ${isActive ? 'transparent' : 'var(--border)'}`,
+                  boxShadow: isActive ? '0 4px 16px rgba(255,99,99,0.35)' : 'none',
                   whiteSpace: 'nowrap',
-                  transition: 'border-color 150ms, color 150ms, background 150ms',
+                  transition: 'color 150ms, background 150ms, border-color 150ms, box-shadow 150ms',
                   cursor: 'pointer',
                 }}
               >
                 {tab.label}
               </button>
-            ))}
-          </div>
+            )
+          })}
+        </div>
 
-          {/* Tab panels */}
-          <div style={{ position: 'relative' }}>
-            <AnimatePresence mode="wait">
-              {tabs.map((tab) =>
-                activeTab === tab.id ? (
-                  <motion.div
-                    key={tab.id}
-                    id={`tab-${tab.id}`}
-                    role="tabpanel"
-                    aria-labelledby={`tabbtn-${tab.id}`}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: '1fr',
-                      gap: 32,
-                    }}
-                  >
-                    <style>{`@media (min-width: 860px) { .tab-panel-inner { grid-template-columns: 1fr 1fr !important; align-items: center !important; gap: 48px !important; } }`}</style>
-                    <div className="tab-panel-inner" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 32 }}>
-                      <TabVisual type={tab.visual} />
-                      <div>
-                        <h3
-                          style={{
-                            fontFamily: 'var(--font-display-var), sans-serif',
-                            fontWeight: 600,
-                            fontSize: 'clamp(1.3rem, 2vw, 1.6rem)',
-                            letterSpacing: '-0.02em',
-                            color: 'var(--text)',
-                            marginBottom: 14,
-                          }}
-                        >
-                          {tab.title}
-                        </h3>
-                        <p style={{ fontSize: '0.98rem', color: 'var(--text-2)', maxWidth: '48ch' }}>
-                          {tab.body}
-                          {tab.highlight && (
-                            <> <span style={{ color: 'var(--blue)' }}>{tab.highlight}</span></>
-                          )}
-                        </p>
-                      </div>
+        {/* Tab panels */}
+        <div style={{ position: 'relative' }}>
+          <AnimatePresence mode="wait">
+            {tabs.map((tab) =>
+              activeTab === tab.id ? (
+                <motion.div
+                  key={tab.id}
+                  id={`tab-${tab.id}`}
+                  role="tabpanel"
+                  aria-labelledby={`tabbtn-${tab.id}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <style>{`@media (min-width: 860px) { .tab-inner { grid-template-columns: 1fr 1fr !important; align-items: center !important; gap: 56px !important; } }`}</style>
+                  <div className="tab-inner" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 32 }}>
+                    <TabVisual type={tab.visual} />
+                    <div>
+                      <h3
+                        style={{
+                          fontFamily: 'var(--font-display-var), sans-serif',
+                          fontWeight: 700,
+                          fontSize: 'clamp(1.35rem, 2vw, 1.7rem)',
+                          letterSpacing: '-0.03em',
+                          color: 'var(--text)',
+                          marginBottom: 16,
+                        }}
+                      >
+                        {tab.title}
+                      </h3>
+                      <p style={{ fontSize: '1rem', color: 'var(--text-2)', lineHeight: 1.68, maxWidth: '48ch' }}>
+                        {tab.body}
+                        {tab.highlight && (
+                          <>
+                            {' '}
+                            <span style={{ color: '#FF6363', fontWeight: 500 }}>{tab.highlight}</span>
+                          </>
+                        )}
+                      </p>
                     </div>
-                  </motion.div>
-                ) : null
-              )}
-            </AnimatePresence>
-          </div>
-        </motion.div>
+                  </div>
+                </motion.div>
+              ) : null
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   )

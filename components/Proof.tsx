@@ -14,16 +14,18 @@ export default function Proof() {
   return (
     <section
       style={{
-        paddingBlock: 56,
+        paddingBlock: 52,
         borderTop: '1px solid var(--border)',
         borderBottom: '1px solid var(--border)',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
       <div className="container">
         <p
           style={{
-            fontFamily: 'var(--font-mono-var), monospace',
             fontSize: '0.72rem',
+            fontWeight: 600,
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
             color: 'var(--text-3)',
@@ -34,15 +36,15 @@ export default function Proof() {
           Trusted by teams measuring the planet
         </p>
         <style>{`
-          @media (min-width: 700px) { .logo-row { grid-template-columns: repeat(3, 1fr) !important; } }
-          @media (min-width: 960px) { .logo-row { grid-template-columns: repeat(6, 1fr) !important; } }
+          @media (min-width: 640px) { .proof-row { grid-template-columns: repeat(3, 1fr) !important; } }
+          @media (min-width: 960px) { .proof-row { grid-template-columns: repeat(6, 1fr) !important; } }
         `}</style>
         <div
-          className="logo-row"
+          className="proof-row"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '28px 20px',
+            gap: '20px 16px',
             alignItems: 'center',
             justifyItems: 'center',
           }}
@@ -50,21 +52,23 @@ export default function Proof() {
           {logos.map((name, i) => (
             <motion.span
               key={name}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: '-8%' }}
-              transition={{ duration: 0.64, ease: [0.16, 1, 0.3, 1], delay: i * 0.06 }}
+              transition={{ duration: 0.6, delay: i * 0.07 }}
               style={{
                 fontFamily: 'var(--font-display-var), sans-serif',
-                fontSize: '1rem',
-                letterSpacing: '0.02em',
-                color: 'var(--text-3)',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,251,247,0.2)',
                 whiteSpace: 'nowrap',
                 transition: 'color 280ms',
                 cursor: 'default',
               }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-2)')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-3)')}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,251,247,0.45)')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,251,247,0.2)')}
             >
               {name}
             </motion.span>
