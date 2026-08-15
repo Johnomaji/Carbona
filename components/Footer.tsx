@@ -114,10 +114,27 @@ export default function Footer() {
                 color: 'var(--text-3)',
                 maxWidth: '30ch',
                 lineHeight: 1.6,
+                marginBottom: 12,
               }}
             >
               The Intelligence Layer for Carbon. AI-native infrastructure for measurement, reporting, and verification.
             </p>
+            <a
+              href="tel:+2347039571212"
+              style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-3)', marginBottom: 4 }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-3)')}
+            >
+              +234 703 957 1212
+            </a>
+            <a
+              href="mailto:contact@carbonahq.com"
+              style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-3)' }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-3)')}
+            >
+              contact@carbonahq.com
+            </a>
           </div>
 
           {/* Link columns */}

@@ -50,28 +50,24 @@ function Avatar({ photo, name, initials }: { photo: string; name: string; initia
   return (
     <div
       style={{
-        width: 64,
-        height: 64,
-        borderRadius: '50%',
-        overflow: 'hidden',
+        width: '100%',
+        height: 220,
         position: 'relative',
-        flexShrink: 0,
         background: 'linear-gradient(135deg, #FF4D00, #FF6363)',
-        boxShadow: '0 0 0 2px rgba(255,99,99,0.25), 0 4px 16px rgba(255,99,99,0.2)',
+        overflow: 'hidden',
       }}
     >
       <Image
         src={photo}
         alt={name}
         fill
-        sizes="64px"
+        sizes="(max-width: 700px) 50vw, (max-width: 960px) 33vw, 20vw"
         style={{ objectFit: 'cover', objectPosition: 'top center' }}
         onError={(e) => {
-          /* hide the broken image so the gradient fallback shows */
           ;(e.currentTarget as HTMLImageElement).style.display = 'none'
         }}
       />
-      {/* Gradient fallback shown behind the image */}
+      {/* Gradient initials fallback */}
       <div
         aria-hidden="true"
         style={{
@@ -81,14 +77,28 @@ function Avatar({ photo, name, initials }: { photo: string; name: string; initia
           alignItems: 'center',
           justifyContent: 'center',
           fontFamily: 'var(--font-mono-var), monospace',
-          fontSize: '0.82rem',
+          fontSize: '2rem',
           fontWeight: 700,
-          color: '#FFFBF7',
+          color: 'rgba(255,251,247,0.6)',
           zIndex: -1,
+          letterSpacing: '-0.02em',
         }}
       >
         {initials}
       </div>
+      {/* Bottom fade */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 64,
+          background: 'linear-gradient(to top, rgba(24,22,20,0.7), transparent)',
+          pointerEvents: 'none',
+        }}
+      />
     </div>
   )
 }
@@ -150,7 +160,7 @@ export default function Team() {
                 background: 'rgba(255,251,247,0.03)',
                 border: '1px solid var(--border)',
                 borderRadius: 'var(--radius-lg)',
-                padding: 24,
+                overflow: 'hidden',
                 transition: 'border-color 280ms, background 280ms',
               }}
               onMouseEnter={(e) => {
@@ -164,33 +174,34 @@ export default function Team() {
             >
               <Avatar photo={m.photo} name={m.name} initials={m.initials} />
 
-              <h3
-                style={{
-                  fontFamily: 'var(--font-display-var), sans-serif',
-                  fontWeight: 700,
-                  fontSize: '0.95rem',
-                  letterSpacing: '-0.02em',
-                  color: 'var(--text)',
-                  marginBottom: 4,
-                  marginTop: 18,
-                }}
-              >
-                {m.name}
-              </h3>
-              <span
-                style={{
-                  fontFamily: 'var(--font-mono-var), monospace',
-                  fontSize: '0.68rem',
-                  color: '#FF6363',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  marginBottom: 14,
-                  display: 'block',
-                }}
-              >
-                {m.role}
-              </span>
-              <p style={{ fontSize: '0.82rem', color: 'var(--text-2)', lineHeight: 1.62 }}>{m.bio}</p>
+              <div style={{ padding: '20px 20px 22px' }}>
+                <h3
+                  style={{
+                    fontFamily: 'var(--font-display-var), sans-serif',
+                    fontWeight: 700,
+                    fontSize: '0.95rem',
+                    letterSpacing: '-0.02em',
+                    color: 'var(--text)',
+                    marginBottom: 4,
+                  }}
+                >
+                  {m.name}
+                </h3>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono-var), monospace',
+                    fontSize: '0.68rem',
+                    color: '#FF6363',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    marginBottom: 12,
+                    display: 'block',
+                  }}
+                >
+                  {m.role}
+                </span>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-2)', lineHeight: 1.62 }}>{m.bio}</p>
+              </div>
             </motion.div>
           ))}
         </div>
